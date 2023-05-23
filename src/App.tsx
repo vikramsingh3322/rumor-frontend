@@ -3,6 +3,8 @@ import React, { useState } from 'react';
 import axios from 'axios';
 
 import NavBar from './NavBar';
+import SearchResults from './SearchResults';
+
 
 
 const App: React.FC = () => {
@@ -31,6 +33,7 @@ const App: React.FC = () => {
     <Box p={1}>
       <Box mt={0} p={1}>
       <NavBar onSearch={handleSearch} />
+      <SearchResults searchResults={searchResults} />
       </Box>
     </Box>
   );
