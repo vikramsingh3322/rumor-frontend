@@ -1,26 +1,39 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { Box, Button } from '@chakra-ui/react';
+import React, { useState } from 'react';
+import axios from 'axios';
 
-function App() {
+import NavBar from './NavBar';
+
+
+const App: React.FC = () => {
+
+  const [keyword, setKeyword] = useState('');
+  const [searchResults, setSearchResults] = useState([]);
+  const [page, setPage] = useState(1);
+
+  const handleSearch = async (keyword: string) => {
+    setKeyword(keyword);
+    setPage(1); // Reset page to 1 when performing a new search
+
+    try {
+      const response = await axios.get('https://express-backend-image-app.herokuapp.com/images', {
+        params: { keyword, page: 1 },
+      });
+      console.log(response);
+      const data = response.data.data;
+      setSearchResults(data);
+    } catch (error) {
+      console.error('Error fetching search results:', error);
+    }
+  };
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Box p={1}>
+      <Box mt={0} p={1}>
+      <NavBar onSearch={handleSearch} />
+      </Box>
+    </Box>
   );
-}
+};
 
 export default App;
